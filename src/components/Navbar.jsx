@@ -14,7 +14,7 @@ function Navbar() {
   return (
     <div className="nav-container">
       <div className="logo-container">
-        <Avatar src={icon} size={100} />
+        <Avatar src={icon} size={80} />
         <Typography.Title level={2} className="logo">
           <Link to="/">Crypytoverse</Link>
         </Typography.Title>
