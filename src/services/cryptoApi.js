@@ -1,21 +1,23 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const cryptoApiHeaders = {
-  "X-RapidAPI-Host": "coinranking1.p.rapidapi.com",
   "X-RapidAPI-Key": "31688f1d59mshd92eb1977e8cb10p199c91jsnebce3fbfba5e",
+  "X-RapidAPI-Host": "coinranking1.p.rapidapi.com",
 };
 
 const baseUrl = "https://coinranking1.p.rapidapi.com";
 
-const createRequest = (url) => ({ url, headers: cryptoApiHeaders });
+const createRequest = (url, params = {}) => ({
+  url,
+  headers: cryptoApiHeaders,
+  params,
+});
 
 export const cryptoApi = createApi({
-  //createApi je funkc koju dobijam iz reduxa
-  reducerPath: "cryptoApi", //oznacava za sta je reducer
-  baseQuery: fetchBaseQuery({ baseUrl }), // fatchBaseQuery takodje
+  reducerPath: "cryptoApi",
+  baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (builder) => ({
     getCryptos: builder.query({
-      //name of the endpoints
       query: (count) => createRequest(`/coins?limit=${count}`),
     }),
     getCryptoDetails: builder.query({
@@ -25,8 +27,15 @@ export const cryptoApi = createApi({
       query: ({ coinId, timeperiod }) =>
         createRequest(`coin/${coinId}/history?timeperiod=${timeperiod}`),
     }),
-    etExchanges: builder.query({
-      query: () => createRequest("/exchanges"),
+    getExchanges: builder.query({
+      query: () =>
+        createRequest("/exchanges", {
+          referenceCurrencyUuid: "yhjMzLPhuIDl",
+          limit: "50",
+          offset: "0",
+          orderBy: "24hVolume",
+          orderDirection: "desc",
+        }),
     }),
   }),
 });
